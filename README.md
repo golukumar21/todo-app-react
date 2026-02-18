@@ -208,7 +208,3 @@ This application is a client-side To-Do management tool built with modern React 
 * GitHub Pages
 
 The setup process typically takes under 10 minutes.
-
----
-
-End of Document
