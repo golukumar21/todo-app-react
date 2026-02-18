@@ -1,121 +1,72 @@
-# To-Do Application Setup & Run Guide
+# To-Do Application – Run Guide
 
 ## Overview
 
-This document explains how to set up, install, and run the To-Do application locally. The application is built using:
+This document explains how to run the To-Do application locally after the source code has already been provided.
+
+The application is built using:
 
 * React
 * TypeScript
 * Vite
 * Tailwind CSS
-* Local Storage (for data persistence)
+* Browser Local Storage (for persistence)
 
-No backend or database is required.
+No backend or database setup is required.
 
 ---
 
 # 1. Prerequisites
 
-Before starting, ensure you have the following installed:
+Before running the application, ensure the following is installed on your system:
 
-### Node.js
+## Node.js
 
-Download and install from:
+Download from:
 [https://nodejs.org](https://nodejs.org)
 
-Recommended version: **18.x or later**
+Recommended version: **Node 18.x or later**
 
-Verify installation:
+Verify installation by running:
 
 ```bash
 node -v
 npm -v
 ```
 
+Both commands should return version numbers.
+
 ---
 
-# 2. Create the Project
+# 2. Install Dependencies
 
-Open a terminal and run:
+Navigate to the project root directory (the folder containing `package.json`).
 
-```bash
-npm create vite@latest todo-app
-```
-
-When prompted, select:
-
-* Framework: **React**
-* Variant: **TypeScript**
-
-Then:
+Example:
 
 ```bash
 cd todo-app
+```
+
+Then install all required dependencies:
+
+```bash
 npm install
 ```
 
----
+This will install:
 
-# 3. Install Tailwind CSS
-
-Install required packages:
-
-```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
-
-### Configure `tailwind.config.js`
-
-Update the content section:
-
-```js
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-```
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* All supporting packages defined in `package.json`
 
 ---
 
-# 4. Configure Tailwind in CSS
+# 3. Start the Development Server
 
-Open `src/index.css` (or `App.css`) and add:
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-```
-
----
-
-# 5. Replace Source Files
-
-Replace the contents of the `src/` directory with the provided application files:
-
-* `App.tsx`
-* `main.tsx`
-* `types.ts`
-* `constants.ts`
-* `components/Header.tsx`
-* `components/TaskItem.tsx`
-* `components/TaskForm.tsx`
-* `components/ConfirmModal.tsx`
-
-Ensure the folder structure matches the project layout.
-
----
-
-# 6. Run the Application
-
-Start the development server:
+Run the following command:
 
 ```bash
 npm run dev
@@ -127,21 +78,39 @@ You should see output similar to:
 Local: http://localhost:5173/
 ```
 
-Open the URL in your browser.
+Open the displayed URL in your browser to view the application.
+
+If port 5173 is already in use, Vite will automatically assign a different available port.
 
 ---
 
-# 7. Build for Production
+# 4. Using the Application
 
-To generate a production build:
+Once the application is running in the browser, you can:
+
+* Add new tasks
+* Edit existing tasks
+* Delete tasks (with confirmation)
+* Change task status (Pending → In Progress → Completed)
+* Filter tasks
+* Search tasks
+* Collapse and expand task sections
+
+All data is stored in the browser’s localStorage.
+
+---
+
+# 5. Production Build (Optional)
+
+To create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-The optimized files will be generated in the `dist/` folder.
+The production-ready files will be generated inside the `dist/` folder.
 
-To preview the production build:
+To preview the production build locally:
 
 ```bash
 npm run preview
@@ -149,62 +118,65 @@ npm run preview
 
 ---
 
-# 8. Application Features
+# 6. Resetting Application Data
 
-* Add new tasks
-* Edit tasks
-* Delete tasks with confirmation
-* Status transitions (Pending → In Progress → Completed)
-* Search functionality
-* Filter by status
-* Collapsible task sections
-* Local storage persistence
-* Mobile-responsive layout
+Since the app uses browser localStorage, you can reset all tasks by:
+
+1. Opening browser Developer Tools
+2. Going to the **Application** tab
+3. Selecting **Local Storage**
+4. Clearing stored keys related to the app
 
 ---
 
-# 9. Data Storage
+# 7. Troubleshooting
 
-The application uses **browser localStorage**.
+## "npm not recognized"
 
-Stored keys:
+Ensure Node.js is properly installed and added to your system PATH.
 
-* `todotasks`
-* `tasks_filter`
+## Dependency errors
 
-To reset the app:
+Delete `node_modules` and reinstall:
 
-1. Open browser DevTools
-2. Go to Application → Local Storage
-3. Clear stored keys
+```bash
+rm -rf node_modules
+npm install
+```
 
----
+(Use `rd /s /q node_modules` on Windows.)
 
-# 10. Troubleshooting
+## Tailwind styles not applying
 
-### Port already in use
+Ensure:
 
-If port 5173 is busy, Vite will automatically assign another port.
-
-### Node version errors
-
-Ensure you are using Node 18+.
-
-### Tailwind not working
-
-Verify:
-
-* Tailwind directives are added to CSS
-* `content` paths are correct
+* Tailwind is installed
+* Tailwind directives exist in the main CSS file
+* The project was not modified incorrectly
 
 ---
 
-# 11. Summary
+# Deployment
 
-This application is a client-side To-Do management tool built with modern React tooling. It requires no backend and can be deployed easily to platforms such as:
+```bash
+npm run deploy
+```
 
-* Vercel
-* Netlify
-* GitHub Pages
+The application has also been deployed to **GitHub Pages** and can be accessed online at:
 
-The setup process typically takes under 10 minutes.
+[https://golukumar21.github.io/todo-app-react/]
+
+This allows the application to be used without any local installation.
+
+---
+
+# Summary
+
+To run the application:
+
+1. Install Node.js
+2. Run `npm install`
+3. Run `npm run dev`
+4. Open the local server URL in your browser
+
+The application will then be fully functional locally.
