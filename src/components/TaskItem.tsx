@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { type Task, TaskStatus } from "../types";
 import { STATUS_COLORS, STATUS_TEXT_COLORS } from "../constants";
 
@@ -22,7 +23,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div className="relative bg-white p-4 mb-3 rounded-lg border border-gray-100 shadow-sm transition-all hover:shadow-md cursor-pointer group">
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.3 }} className="relative bg-white p-4 mb-3 rounded-lg border border-gray-100 shadow-sm transition-all hover:shadow-md cursor-pointer group">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 mt-1">
           <div className="w-8 h-8 rounded-full border-2 border-blue-800 flex items-center justify-center text-blue-800 font-bold text-xs">
@@ -170,7 +176,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
           🗑
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

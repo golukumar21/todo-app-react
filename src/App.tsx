@@ -7,6 +7,7 @@ import {
   type ViewMode,
   type FilterStatus,
 } from "./types";
+import { AnimatePresence } from "framer-motion";
 import TaskForm from "./components/TaskForm";
 import TaskItem from "./components/TaskItem";
 import ConfirmModal from "./components/ConfirmModal";
@@ -257,8 +258,8 @@ function App() {
                     />
                   </svg>
                 </button>
-
                 {expandedSections[status] && (
+                  <AnimatePresence mode="popLayout">
                   <div className="mt-3 space-y-1">
                     {categorizedTasks[status].length === 0 ? (
                       <p className="text-gray-400 text-[11px] italic text-center py-4">
@@ -281,6 +282,7 @@ function App() {
                       ))
                     )}
                   </div>
+                  </AnimatePresence>
                 )}
               </div>
             ))}
