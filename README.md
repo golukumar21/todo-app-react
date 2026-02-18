@@ -1,73 +1,214 @@
-# React + TypeScript + Vite
+# To-Do Application Setup & Run Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This document explains how to set up, install, and run the To-Do application locally. The application is built using:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* Local Storage (for data persistence)
 
-## React Compiler
+No backend or database is required.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# 1. Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Before starting, ensure you have the following installed:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Node.js
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Download and install from:
+[https://nodejs.org](https://nodejs.org)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Recommended version: **18.x or later**
+
+Verify installation:
+
+```bash
+node -v
+npm -v
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
+
+# 2. Create the Project
+
+Open a terminal and run:
+
+```bash
+npm create vite@latest todo-app
+```
+
+When prompted, select:
+
+* Framework: **React**
+* Variant: **TypeScript**
+
+Then:
+
+```bash
+cd todo-app
+npm install
+```
+
+---
+
+# 3. Install Tailwind CSS
+
+Install required packages:
+
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+### Configure `tailwind.config.js`
+
+Update the content section:
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
   },
-])
+  plugins: [],
+}
 ```
+
+---
+
+# 4. Configure Tailwind in CSS
+
+Open `src/index.css` (or `App.css`) and add:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+---
+
+# 5. Replace Source Files
+
+Replace the contents of the `src/` directory with the provided application files:
+
+* `App.tsx`
+* `main.tsx`
+* `types.ts`
+* `constants.ts`
+* `components/Header.tsx`
+* `components/TaskItem.tsx`
+* `components/TaskForm.tsx`
+* `components/ConfirmModal.tsx`
+
+Ensure the folder structure matches the project layout.
+
+---
+
+# 6. Run the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+You should see output similar to:
+
+```
+Local: http://localhost:5173/
+```
+
+Open the URL in your browser.
+
+---
+
+# 7. Build for Production
+
+To generate a production build:
+
+```bash
+npm run build
+```
+
+The optimized files will be generated in the `dist/` folder.
+
+To preview the production build:
+
+```bash
+npm run preview
+```
+
+---
+
+# 8. Application Features
+
+* Add new tasks
+* Edit tasks
+* Delete tasks with confirmation
+* Status transitions (Pending → In Progress → Completed)
+* Search functionality
+* Filter by status
+* Collapsible task sections
+* Local storage persistence
+* Mobile-responsive layout
+
+---
+
+# 9. Data Storage
+
+The application uses **browser localStorage**.
+
+Stored keys:
+
+* `todotasks`
+* `tasks_filter`
+
+To reset the app:
+
+1. Open browser DevTools
+2. Go to Application → Local Storage
+3. Clear stored keys
+
+---
+
+# 10. Troubleshooting
+
+### Port already in use
+
+If port 5173 is busy, Vite will automatically assign another port.
+
+### Node version errors
+
+Ensure you are using Node 18+.
+
+### Tailwind not working
+
+Verify:
+
+* Tailwind directives are added to CSS
+* `content` paths are correct
+
+---
+
+# 11. Summary
+
+This application is a client-side To-Do management tool built with modern React tooling. It requires no backend and can be deployed easily to platforms such as:
+
+* Vercel
+* Netlify
+* GitHub Pages
+
+The setup process typically takes under 10 minutes.
+
+---
+
+End of Document
