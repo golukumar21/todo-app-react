@@ -52,6 +52,7 @@ function App() {
     );
   }, [tasks, searchQuery]);
 
+  // Setting Selected filter to localstorage
   useEffect(() => {
     localStorage.setItem("tasks_filter", statusFilter);
   }, [statusFilter]);
@@ -100,6 +101,20 @@ function App() {
     );
     setEditingTask(null);
     setViewMode("LIST");
+  };
+
+  const markInProgress = (id: string) => {
+    updateTaskStatus(id, TaskStatus.IN_PROGRESS);
+  };
+
+  const markPending = (id: string) => {
+    updateTaskStatus(id, TaskStatus.PENDING);
+  };
+
+  const updateTaskStatus = (id: string, status: TaskStatus) => {
+    setTasks((prev) =>
+      prev.map((task) => (task.id === id ? { ...task, status } : task)),
+    );
   };
 
   const deleteTask = (id: string) => {
@@ -260,6 +275,8 @@ function App() {
                           }}
                           onDelete={deleteTask}
                           onMarkComplete={markComplete}
+                          onMarkInProgress={markInProgress}
+                          onMarkPending={markPending}
                         />
                       ))
                     )}

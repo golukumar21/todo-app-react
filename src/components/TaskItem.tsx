@@ -7,6 +7,8 @@ interface TaskItemProps {
   onEdit: (task: Task) => void;
   onDelete: (id: string) => void;
   onMarkComplete: (id: string) => void;
+  onMarkInProgress: (id: string) => void;
+  onMarkPending: (id: string) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
@@ -14,8 +16,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
   onEdit,
   onDelete,
   onMarkComplete,
+  onMarkInProgress,
+  onMarkPending,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
     <div
@@ -33,16 +39,22 @@ const TaskItem: React.FC<TaskItemProps> = ({
         <div className="flex-grow min-w-0">
           <div className="flex justify-between items-start">
             <h3
-              className={`font-semibold text-gray-800 truncate ${task.status === TaskStatus.COMPLETED ? "line-through text-gray-400" : ""}`}
+              className={`font-semibold text-gray-800 truncate ${
+                task.status === TaskStatus.COMPLETED
+                  ? "line-through text-gray-400"
+                  : ""
+              }`}
             >
               {task.title}
             </h3>
             <div className="flex items-center gap-1.5 ml-2">
               <span
                 className={`w-2 h-2 rounded-full ${STATUS_COLORS[task.status]}`}
-              ></span>
+              />
               <span
-                className={`text-[10px] font-medium whitespace-nowrap ${STATUS_TEXT_COLORS[task.status]}`}
+                className={`text-[10px] font-medium whitespace-nowrap ${
+                  STATUS_TEXT_COLORS[task.status]
+                }`}
               >
                 {task.status}
               </span>
@@ -64,86 +76,108 @@ const TaskItem: React.FC<TaskItemProps> = ({
         </div>
       </div>
 
-      {/* Hover Actions: Mark as complete, Edit task, Delete task */}
+      {/* Hover Actions */}
       <div
-        className={`absolute bottom-3 right-3 flex gap-2 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
+        className={`absolute bottom-3 right-3 flex flex-wrap gap-2 transition-opacity duration-200 ${
+          isHovered ? "opacity-100" : "opacity-0"
+        }`}
       >
-        {/* Mark as complete */}
-        {task.status !== TaskStatus.COMPLETED &&
-          task.status !== TaskStatus.PENDING && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onMarkComplete(task.id);
-              }}
-              className="p-1.5 bg-green-50 text-green-600 rounded hover:bg-green-100 transition-colors"
-              title="Mark as complete"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </button>
-          )}
-        {/* Edit task*/}
+        {/* Status transitions */}
+
+        {/* Pending → In Progress */}
+        {task.status === TaskStatus.PENDING && (
+          <button
+            onClick={(e) => {
+              stop(e);
+              onMarkInProgress(task.id);
+            }}
+            className="p-1.5 bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100 transition-colors"
+            title="Move to in progress"
+          >
+            ▶
+          </button>
+        )}
+
+        {/* In Progress → Completed */}
+        {task.status === TaskStatus.IN_PROGRESS && (
+          <button
+            onClick={(e) => {
+              stop(e);
+              onMarkComplete(task.id);
+            }}
+            className="p-1.5 bg-green-50 text-green-600 rounded hover:bg-green-100 transition-colors"
+            title="Mark as completed"
+          >
+            ✓
+          </button>
+        )}
+
+        {/* In Progress → Pending */}
+        {task.status === TaskStatus.IN_PROGRESS && (
+          <button
+            onClick={(e) => {
+              stop(e);
+              onMarkPending(task.id);
+            }}
+            className="p-1.5 bg-gray-50 text-gray-600 rounded hover:bg-gray-100 transition-colors"
+            title="Move to pending"
+          >
+            ↺
+          </button>
+        )}
+
+        {/* Completed → In Progress */}
+        {task.status === TaskStatus.COMPLETED && (
+          <button
+            onClick={(e) => {
+              stop(e);
+              onMarkInProgress(task.id);
+            }}
+            className="p-1.5 bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100 transition-colors"
+            title="Reopen as in progress"
+          >
+            ↻
+          </button>
+        )}
+
+        {/* Completed → Pending */}
+        {task.status === TaskStatus.COMPLETED && (
+          <button
+            onClick={(e) => {
+              stop(e);
+              onMarkPending(task.id);
+            }}
+            className="p-1.5 bg-gray-50 text-gray-600 rounded hover:bg-gray-100 transition-colors"
+            title="Move back to pending"
+          >
+            ⏸
+          </button>
+        )}
+
+        {/* Edit */}
         {task.status !== TaskStatus.COMPLETED && (
           <button
             onClick={(e) => {
-              e.stopPropagation();
+              stop(e);
               onEdit(task);
             }}
             className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition-colors"
             title="Edit task"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
+            ✎
           </button>
         )}
-        {/* Delete task */}
+
+        {/* Delete */}
         <button
           onClick={(e) => {
-            e.stopPropagation();
+            stop(e);
             onDelete(task.id);
           }}
           className="p-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-colors"
           title="Delete task"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
+          🗑
         </button>
       </div>
     </div>
