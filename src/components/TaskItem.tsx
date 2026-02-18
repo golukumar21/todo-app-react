@@ -19,16 +19,10 @@ const TaskItem: React.FC<TaskItemProps> = ({
   onMarkInProgress,
   onMarkPending,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <div
-      className="relative bg-white p-4 mb-3 rounded-lg border border-gray-100 shadow-sm transition-all hover:shadow-md cursor-pointer group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="relative bg-white p-4 mb-3 rounded-lg border border-gray-100 shadow-sm transition-all hover:shadow-md cursor-pointer group">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0 mt-1">
           <div className="w-8 h-8 rounded-full border-2 border-blue-800 flex items-center justify-center text-blue-800 font-bold text-xs">
@@ -77,11 +71,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
       </div>
 
       {/* Hover Actions */}
-      <div
-        className={`absolute bottom-3 right-3 flex flex-wrap gap-2 transition-opacity duration-200 ${
-          isHovered ? "opacity-100" : "opacity-0"
-        }`}
-      >
+      <div className="absolute bottom-3 right-3 flex flex-wrap gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
         {/* Status transitions */}
 
         {/* Pending → In Progress */}
