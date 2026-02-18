@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { type Task, TaskStatus } from "../types";
 import { STATUS_COLORS, STATUS_TEXT_COLORS } from "../constants";
 
